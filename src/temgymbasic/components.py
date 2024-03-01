@@ -464,6 +464,8 @@ class DoubleDeflector(Component):
         first: Deflector,
         second: Deflector,
         name: Optional[str] = None,
+        defratio_x: Optional[float] = -1,
+        defratio_y: Optional[float] = -1
     ):
         super().__init__(
             z=(first.z + second.z) / 2,
@@ -471,6 +473,8 @@ class DoubleDeflector(Component):
         )
         self._first = first
         self._second = second
+        self._defratio_x = defratio_x
+        self._defratio_y = defratio_y
         self._validate_component()
 
     def _validate_component(self):
@@ -488,6 +492,14 @@ class DoubleDeflector(Component):
     @property
     def second(self) -> Deflector:
         return self._second
+
+    @property
+    def defratio_x(self) -> float:
+        return self._defratio_x
+ 
+    @property
+    def defratio_y(self) -> float:
+        return self._defratio_y
 
     @property
     def z(self):
@@ -575,6 +587,18 @@ class DoubleDeflector(Component):
             in_slope=in_slope[1],
         )
 
+    def set_defratio(
+        self,
+        defx: float,
+        ratiox: float,
+        defy: float,
+        ratioy: float,
+    ):
+        self.first.defx = defx
+        self.first.defy = defy
+        self.second.defx = defx*ratiox
+        self.second.defy = defy*ratioy
+    
     @staticmethod
     def gui_wrapper():
         from .gui import DoubleDeflectorGUI

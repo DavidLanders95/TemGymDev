@@ -464,8 +464,6 @@ class DoubleDeflector(Component):
         first: Deflector,
         second: Deflector,
         name: Optional[str] = None,
-        defratio_x: Optional[float] = -1,
-        defratio_y: Optional[float] = -1
     ):
         super().__init__(
             z=(first.z + second.z) / 2,
@@ -473,10 +471,24 @@ class DoubleDeflector(Component):
         )
         self._first = first
         self._second = second
-        self._defratio_x = defratio_x
-        self._defratio_y = defratio_y
         self._validate_component()
 
+    @classmethod
+    def create_with_defratio(cls,
+                      defx: float,
+                      defy: float,
+                      defratiox: float,
+                      defratioy: float,
+                      z_upper: float,
+                      z_lower: float,
+                      name_upper: Optional[str] = None,
+                      name_lower: Optional[str] = None):
+        
+        first=Deflector(defx=defx, defy=defy, z=z_upper, name=name_upper)
+        second=Deflector(defx=defratiox*defx, defy=defy*defratioy, z=z_lower, name=name_lower)
+
+        return first, second
+    
     def _validate_component(self):
         if self.first.z >= self.second.z:
             raise InvalidModelError("First deflector must be before second")

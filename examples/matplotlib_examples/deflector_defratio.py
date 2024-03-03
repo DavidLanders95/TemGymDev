@@ -56,7 +56,7 @@ overfocus_params = OverfocusParams(
 model = make_model_proto(overfocus_params)
 
 # Step the rays through the model to get the ray positions throughout the column
-model.components[1].set_defratio(10, -5, 1, -2)
+model.components[1].set_defratio(5, -1, 1, -1)
 print(model.components[1].second.defx)
 fig, ax = plot_model(model)
 plt.show()
